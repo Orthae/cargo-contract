@@ -33,7 +33,7 @@ impl Profile {
             opt_level: OptLevel::Z,
             lto: Lto::Fat,
             codegen_units: Some(1),
-            overflow_checks: true,
+            overflow_checks: false,
             panic: PanicStrategy::Abort,
         }
     }
@@ -143,7 +143,7 @@ mod tests {
         expected.insert("opt-level".into(), value::Value::String("z".into()));
         expected.insert("lto".into(), value::Value::String("fat".into()));
         expected.insert("codegen-units".into(), value::Value::Integer(1));
-        expected.insert("overflow-checks".into(), value::Value::Boolean(true));
+        expected.insert("overflow-checks".into(), value::Value::Boolean(false));
         expected.insert("panic".into(), value::Value::String("abort".into()));
 
         let mut manifest_profile = toml::from_str(manifest_toml).unwrap();
@@ -161,14 +161,14 @@ mod tests {
             panic = "unwind"
             lto = false
             opt-level = 3
-            overflow-checks = false
+            overflow-checks = true
             codegen-units = 256
         "#;
         let mut expected = toml::value::Table::new();
         expected.insert("opt-level".into(), value::Value::Integer(3));
         expected.insert("lto".into(), value::Value::Boolean(false));
         expected.insert("codegen-units".into(), value::Value::Integer(256));
-        expected.insert("overflow-checks".into(), value::Value::Boolean(false));
+        expected.insert("overflow-checks".into(), value::Value::Boolean(true));
         expected.insert("panic".into(), value::Value::String("unwind".into()));
 
         let mut manifest_profile = toml::from_str(manifest_toml).unwrap();
